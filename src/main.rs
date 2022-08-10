@@ -20,3 +20,11 @@ fn rocket() -> _ {
         .mount("/", routes![delete_doc])
         .mount("/", routes![update_doc])
 }
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn simple_test() {
+        print!("Simple unit test which should be run before dockerizing!")
+    }
+}
