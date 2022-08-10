@@ -12,6 +12,7 @@ use mongodb::{
 
 pub struct MongoRepo {
     docs: Collection<Doc>,
+    client: Client,
 }
 
 impl MongoRepo {
@@ -31,7 +32,7 @@ impl MongoRepo {
         let db = client.database(db_name.as_str());
         let docs: Collection<Doc> = db.collection("docs");
 
-        MongoRepo { docs }
+        MongoRepo { docs, client }
     }
 
     pub fn create_doc(&self, new_doc: Doc) -> Result<InsertOneResult, Error> {
@@ -93,7 +94,11 @@ impl MongoRepo {
             .docs
             .update_one(filter, new_doc, None)
             .ok()
-            .expect("Error updating user");
+            .expect("Error updating doc");
         Ok(updated_doc)
+    }
+
+    pub fn repo_state(&self) -> Result<Vec<String>, mongodb::error::Error> {
+        self.client.list_database_names(None, None)
     }
 }

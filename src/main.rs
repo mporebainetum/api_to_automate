@@ -7,6 +7,7 @@ extern crate rocket;
 
 //add imports below
 use api::doc_api::{create_doc, delete_doc, get_all_docs, get_doc, update_doc};
+use api::health_api::get_health;
 use repository::mongodb_repo::MongoRepo;
 
 #[launch]
@@ -19,6 +20,7 @@ fn rocket() -> _ {
         .mount("/", routes![get_all_docs])
         .mount("/", routes![delete_doc])
         .mount("/", routes![update_doc])
+        .mount("/", routes![get_health])
 }
 
 #[cfg(test)]

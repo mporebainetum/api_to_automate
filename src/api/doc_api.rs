@@ -24,8 +24,8 @@ pub fn get_doc(db: &State<MongoRepo>, path: String) -> Result<Json<Doc>, Status>
     if id.is_empty() {
         return Err(Status::BadRequest);
     };
-    let user_detail = db.get_doc(&id);
-    match user_detail {
+    let doc_detail = db.get_doc(&id);
+    match doc_detail {
         Ok(doc) => Ok(Json(doc)),
         Err(_) => Err(Status::InternalServerError),
     }
@@ -33,9 +33,9 @@ pub fn get_doc(db: &State<MongoRepo>, path: String) -> Result<Json<Doc>, Status>
 
 #[get("/doc")]
 pub fn get_all_docs(db: &State<MongoRepo>) -> Result<Json<Vec<Doc>>, Status> {
-    let users = db.get_all_docs();
-    match users {
-        Ok(users) => Ok(Json(users)),
+    let docs = db.get_all_docs();
+    match docs {
+        Ok(docs) => Ok(Json(docs)),
         Err(_) => Err(Status::InternalServerError),
     }
 }
