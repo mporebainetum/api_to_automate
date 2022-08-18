@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: api_to_automate
+    volumes:
+      - /tmp/mongodata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  rustapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rustapp
+    working_dir: /root
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
