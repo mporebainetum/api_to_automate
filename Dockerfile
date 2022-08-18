@@ -5,11 +5,11 @@ COPY . .
 RUN apt update && apt install musl-tools -y
 RUN cargo test
 RUN rustup target add x86_64-unknown-linux-musl
-RUN cargo build --target x86_64-unknown-linux-musl --release
+RUN cargo build --target x86_64-unknown-linux-musl
 
 FROM alpine:latest
 WORKDIR /root/
-COPY --from=builder /usr/src/api_to_automate/target/x86_64-unknown-linux-musl/release/api_to_automate /root/api_to_automate
+COPY --from=builder /usr/src/api_to_automate/target/x86_64-unknown-linux-musl/debug/api_to_automate /root/api_to_automate
 #ENTRYPOINT ["tail"]
 #CMD ["-f", "/dev/null"]
 CMD ["/root/api_to_automate"]
